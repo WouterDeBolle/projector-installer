@@ -85,7 +85,7 @@ def get_update(run_config: RunConfig) -> Optional[Product]:
     product = None
 
     for prod in prod_list:
-        if prod.ver > current and (product is None or prod.ver > product.ver):
+        if prod.ver.__gt__(current) and (product is None or prod.ver.__gt__(product.ver)):
             product = prod
 
     return product
