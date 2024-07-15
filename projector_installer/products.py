@@ -12,7 +12,7 @@ from typing import List, Tuple, Any, Optional
 from enum import Enum, auto
 from urllib.error import URLError
 from distutils.version import LooseVersion
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from .global_config import LONG_NETWORK_TIMEOUT
 from .utils import download_file, get_file_name_from_url, get_json
@@ -50,7 +50,7 @@ class Product:
     name: str
     url: str
     kind: IDEKind
-    ver: LooseVersion = LooseVersion('0.0.0')
+    ver: LooseVersion = field(default_factory=lambda: LooseVersion('0.0.0'))
 
     def __key__(self) -> Tuple[str, str]:
         return self.name, self.url
@@ -82,7 +82,7 @@ def _parse_entry(entry: Any) -> Product:
     except KeyError:
         kind = IDEKind.Unknown
 
-    ver = LooseVersion(entry['name'].split(' ')[-1])
+    ver = field(default_factory=lambda: LooseVersion(entry['name'].split(' ')[-1]))
 
     return Product(entry['name'], entry['url'], kind, ver)
 
